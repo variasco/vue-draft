@@ -1,14 +1,24 @@
 <template>
   <div class="posts flex-container">
-    <div class="post" v-for="post in posts">
-      <div><strong>Название:</strong> {{ post.title }}</div>
-      <div><strong>Описание:</strong> {{ post.body }}</div>
-    </div>
+    <h3>Список постов</h3>
+    <PostItem
+      v-if="posts.length"
+      v-for="post in posts"
+      key="post.id"
+      :post="post"
+      @delete="deletePost"
+    />
+    <p v-else>Список постов пуст</p>
   </div>
 </template>
 
 <script>
+import PostItem from "./PostItem";
+
 export default {
+  components: {
+    PostItem,
+  },
   props: {
     posts: {
       type: Array,
@@ -16,12 +26,12 @@ export default {
       default: [],
     },
   },
+  methods: {
+    deletePost(id) {
+      this.$emit("delete", id);
+    },
+  },
 };
 </script>
 
-<style scoped>
-.post {
-  padding: 15px;
-  border: 2px solid teal;
-}
-</style>
+<style scoped></style>
