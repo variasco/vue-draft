@@ -39,7 +39,4 @@ export default {
 };
 </script>
 
-<style scoped>
-.form {
-}
-</style>
+<style scoped></style>

@@ -10,6 +10,7 @@ export default {
 
 <style scoped>
 .button {
+  line-height: 17px;
   padding: 10px 15px;
   background: none;
   color: teal;

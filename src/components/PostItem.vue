@@ -31,6 +31,7 @@ export default {
   padding: 15px;
   border: 2px solid teal;
   display: flex;
+  gap: 12px;
   align-items: center;
   justify-content: space-between;
 }
