@@ -1,5 +1,6 @@
 <template>
   <form class="form flex-container" action="">
+    <h3>Создание поста</h3>
     <Input type="text" placeholder="Название" v-model="post.title" />
     <Input type="text" placeholder="Описание" v-model="post.body" />
     <Button style="align-self: flex-start" @click="createPost">Создать</Button>
@@ -40,6 +41,5 @@ export default {
 
 <style scoped>
 .form {
-  margin-bottom: 15px;
 }
 </style>
