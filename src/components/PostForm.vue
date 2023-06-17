@@ -1,7 +1,7 @@
 <template>
   <form class="form flex-container" action="">
     <h3>Создание поста</h3>
-    <Input type="text" placeholder="Название" v-model="post.title" />
+    <Input v-focus type="text" placeholder="Название" v-model="post.title" />
     <Input type="text" placeholder="Описание" v-model="post.body" />
     <Button style="align-self: flex-start" @click="createPost">Создать</Button>
   </form>
