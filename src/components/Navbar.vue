@@ -3,6 +3,7 @@
     <div class="logo" @click="$router.push('/')">Vue 3</div>
     <div class="buttons">
       <Button @click="$router.push('/posts')" style="margin-right: 20px">Посты</Button>
+      <Button @click="$router.push('/composition')" style="margin-right: 20px">Посты 2.0</Button>
       <Button @click="$router.push('/about')">О приложении</Button>
     </div>
   </div>

@@ -2,86 +2,55 @@
   <div>
     <h1>Страница с постами</h1>
 
-    <Input
-      style="margin-top: 12px"
-      :model-value="searchQuery"
-      @update:model-value="setSearchQuery"
-      placeholder="Search..."
-    />
+    <Input style="margin-top: 12px" v-model="searchQuery" placeholder="Search..." />
     <div style="margin: 12px 0" class="buttons">
-      <Button @click="showDialog">Создать пост</Button>
-      <Select
-        :model-value="selectedSort"
-        @update:model-value="setSelectedSort"
-        :options="sortOptions"
-      />
+      <Button>Создать пост</Button>
+      <Select v-model="selectedSort" :options="sortOptions" />
     </div>
 
     <Dialog v-model:show="dialogVisible">
-      <PostForm :posts="searchedAndSortedPosts" @create="createPost" />
+      <PostForm :posts="searchedAndSortedPosts" />
     </Dialog>
 
-    <PostsList :posts="searchedAndSortedPosts" @delete="deletePost" :isLoading="isPostsLoading" />
+    <PostsList :posts="searchedAndSortedPosts" :isLoading="isPostsLoading" />
 
-    <div v-intersection="fetchMorePosts" class="observer"></div>
+    <!-- <div v-intersection="fetchMorePosts" class="observer"></div> -->
   </div>
 </template>
 
 <script>
 import PostForm from "@/components/PostForm";
 import PostsList from "@/components/PostsList";
-import { mapActions, mapGetters, mapMutations, mapState } from "vuex";
+import usePosts from "@/hooks/usePosts";
+import useSortedPosts from "@/hooks/useSortedPosts";
+import useSortedAndSearchedPosts from "@/hooks/useSortedAndSearchedPosts";
 
 export default {
   components: { PostForm, PostsList },
   data() {
     return {
       dialogVisible: false,
+      sortOptions: [
+        { value: "title", name: "По названию" },
+        { value: "body", name: "По описанию" },
+        { value: "id", name: "По порядку" },
+      ],
     };
   },
+  setup(props) {
+    const { posts, totalPages, isPostsLoading } = usePosts(10);
+    const { selectedSort, sortedPosts } = useSortedPosts(posts);
+    const { searchQuery, searchedAndSortedPosts } = useSortedAndSearchedPosts(sortedPosts);
 
-  methods: {
-    ...mapMutations({
-      setPage: "post/setPage",
-      setSearchQuery: "post/setSearchQuery",
-      setSelectedSort: "post/setSelectedSort",
-    }),
-    ...mapActions({
-      fetchMorePosts: "post/fetchMorePosts",
-      fetchPosts: "post/fetchPosts",
-    }),
-    createPost(post) {
-      this.posts.push(post);
-      this.dialogVisible = false;
-    },
-    deletePost(id) {
-      this.posts = this.posts.filter((post) => post.id !== id);
-    },
-    showDialog() {
-      this.dialogVisible = true;
-    },
-    changePage(page) {
-      this.page = page;
-    },
-  },
-  mounted() {
-    this.fetchPosts();
-  },
-  computed: {
-    ...mapState({
-      posts: (state) => state.post.posts,
-      isPostsLoading: (state) => state.post.isPostsLoading,
-      selectedSort: (state) => state.post.selectedSort,
-      searchQuery: (state) => state.post.searchQuery,
-      page: (state) => state.post.page,
-      limit: (state) => state.post.limit,
-      totalPages: (state) => state.post.totalPages,
-      sortOptions: (state) => state.post.sortOptions,
-    }),
-    ...mapGetters({
-      sortedPosts: "post/sortedPosts",
-      searchedAndSortedPosts: "post/searchedAndSortedPosts",
-    }),
+    return {
+      posts,
+      totalPages,
+      isPostsLoading,
+      selectedSort,
+      sortedPosts,
+      searchQuery,
+      searchedAndSortedPosts,
+    };
   },
 };
 </script>
