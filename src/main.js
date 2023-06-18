@@ -1,9 +1,9 @@
-import { createApp } from "vue";
-import App from "./App";
 import components from "@/components/ui";
 import directives from "@/directives";
 import router from "@/router/router";
-import VIntersection from "@/directives/VIntersection";
+import store from "@/store";
+import { createApp } from "vue";
+import App from "./App";
 
 const app = createApp(App);
 
@@ -15,6 +15,4 @@ directives.forEach((directive) => {
   app.directive(directive.name, directive);
 });
 
-// app.directive("intersection", VIntersection);
-
-app.use(router).mount("#app");
+app.use(store).use(router).mount("#app");
